@@ -1,0 +1,155 @@
+---
+title: "Data Visualization of Top 5 Cryptocurrencies"
+author: "Agustin Espinoza"
+date: "2022-11-29"
+output: powerpoint_presentation
+---
+
+```{r include = FALSE}
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(scales)
+```
+
+## Reserach Question and Background
+* How volatile are the top 5 cryptocurrencies on the market?
+* Crypto is still fairly new
+* Much ongoing research
+* This is important to investors who want to make profit and minimize loss
+
+## What is Crypto?
+* Digital currency
+* Decentralized software system
+* Cryptography encrypted
+* Mostly Blockchain technology (improving, and better tech emerging)
+* Distributed ledger
+
+## Datasets
+* Yahoo Finance datasets 
+* Use CoinMarketCap API to get real time price data
+
+```{r}
+# read csv data
+btc_data <- read.csv("BTC-USD-MAX.csv")
+eth_data <- read.csv("ETH-USD-MAX.csv")
+usdt_data <- read.csv("USDT-USD-MAX.csv")
+bnb_data <- read.csv("BNB-USD-MAX.csv")
+usdc_data <- read.csv("USDC-USD-MAX.csv")
+```
+
+## Hypothesis
+* 5 different crypto datasets
+* 7 variables per dataset
+* 60-100 observations per dataset  
+* Hyposthesis: Volatility is inversely proportional to market cap
+
+## Methods
+* Error when importing raw CSV files into RStudio
+* Solved problem with as.Date() function in R
+
+```{r}
+# reformat dates
+btc <- btc_data %>%
+  mutate(date = ymd(as.Date(Date)))
+```
+
+```{r include = FALSE}
+# reformat dates (cont.)
+eth <- eth_data %>%
+  mutate(date = ymd(as.Date(Date)))
+usdt <- usdt_data %>%
+  mutate(date = ymd(as.Date(Date)))
+bnb <- bnb_data %>%
+  mutate(date = ymd(as.Date(Date)))
+usdc <- usdc_data %>%
+  mutate(date = ymd(as.Date(Date)))
+```
+
+* Data is already reproducible
+* Libraries: ggplot2, dplyr, lubridate, scales
+
+## Bitcoin
+* Market Cap = $325 B
+* Sept 2014 - Nov 2022
+
+```{r}
+# BTC Max Price Plot
+ggplot(btc, aes(x=as.Date(Date), y=Close, group=1)) + 
+  geom_area(fill="orange", alpha=.4) +
+  scale_x_date(date_labels = "%b/%y", breaks = seq.Date(from = as.Date("2014-10-01"), to = as.Date("2022-11-29"), by = 200)) +
+  scale_y_continuous(labels = label_number(suffix = " K", scale = 1e-3)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+  labs(y= "Bitcoin Price ($)", x = "Date")
+```
+
+## Ethereum
+* $156 B
+* Sept 2015 - Nov 2022
+
+```{r}
+# ETH Max Price Plot
+ggplot(eth, aes(x=as.Date(Date), y=Close, group=1)) + 
+  geom_area(fill="black", alpha=.4) +
+  scale_x_date(date_labels = "%b/%y", breaks = seq.Date(from = as.Date("2015-09-01"), to = as.Date("2022-11-30"), by = 200)) +
+  scale_y_continuous(labels = label_number(suffix = " K", scale = 1e-3)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+  labs(y= "Ethereum Price ($)", x = "Date")
+```
+
+## Tether
+* $65 B
+* Mar 2015 - Nov 2022
+
+```{r}
+# USDT Max Price Plot
+ggplot(usdt, aes(x=as.Date(Date), y=Close, group=1)) + 
+  geom_area(fill="cyan", alpha=.4) +
+  scale_x_date(date_labels = "%b/%y", breaks = seq.Date(from = as.Date("2015-03-01"), to = as.Date("2022-11-30"), by = 200)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+  labs(y= "Tether Price ($)", x = "Date")
+```
+
+## BNB
+* $47 B
+* Aug 2017 - Nov 2022
+
+```{r}
+# BNB Max Price Plot
+ggplot(bnb, aes(x=as.Date(Date), y=Close, group=1)) + 
+  geom_area(fill="red", alpha=.4) +
+  scale_x_date(date_labels = "%b/%y", breaks = seq.Date(from = as.Date("2017-08-01"), to = as.Date("2022-11-30"), by = 200)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+  labs(y= "BNB Price ($)", x = "Date")
+```
+
+## USD Coin
+* $43 B
+* Nov 2018 - Nov 2022
+
+```{r}
+# USDC Max Price Plot
+ggplot(usdc, aes(x=as.Date(Date), y=Close, group=1)) + 
+  geom_area(fill="green", alpha=.4) +
+  scale_x_date(date_labels = "%b/%y", breaks = seq.Date(from = as.Date("2018-11-01"), to = as.Date("2022-11-30"), by = 200)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+  labs(y= "USD Coin Price ($)", x = "Date")
+```
+
+
+## What Did I Learn?
+* How to download raw crypto data from reliable sources and APIs
+* Visualize data using ggplot2
+* Create powerpoint presentations using R Markdown
+* More about cryptocurrencies
+
+## Conclusion
+* Overall, project was a success
+* Did not fully satisfy initial project vision
+* However, I still learned a great deal about R and crypto
+* Future projects, volatility analysis and crypto trading bot
+
+## References
+* Crypto real time prices &amp; latest news Yahoo! Finance. Available at: https://finance.yahoo.com/crypto/ [Accessed December 1, 2022]. 
+* Hayes A (2022) Volatility: Meaning in finance and how it works with stocks. Investopedia. Available at: https://www.investopedia.com/terms/v/volatility.asp#:~:text=Volatility%20is%20a%20statistical%20measure%20of%20the%20dispersion%20of%20data,prices%2C%20on%20an%20annualized%20basis. [Accessed December 1, 2022]. 
+* Documentation R. Available at: https://www.r-project.org/other-docs.html [Accessed December 1, 2022]. 
